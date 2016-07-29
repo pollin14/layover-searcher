@@ -1,0 +1,27 @@
+{
+  "name": "payment-manager-js",
+  "description": "Manager to working with multiples payments methods and gateway",
+  "main": "index.js",
+  "authors": [
+    "Victor Aguilar <victor.aguilar@clickbus.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "payment",
+    "gateway",
+    "token"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.7"
+  }
+}

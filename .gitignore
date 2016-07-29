@@ -1,0 +1,20 @@
+# IntelliJ project files
+.idea
+*.iml
+
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+node_modules
+bower_components/
+parameters/parameters.json
+build/
+downloads/
+tmp/
+parameters/gulp-parameters.json
+resources/**/*
+!resources/.gitkeep
+!resources/layover-example.csv

@@ -1,0 +1,44 @@
+{
+  "name": "layover-searcher",
+  "version": "1.0.0",
+  "description": "It is a widget that returns a layover place if a direct route are not exists between two places given",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pollin14/layover-searcher.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "widget",
+    "search",
+    "layover",
+    "place",
+    "route"
+  ],
+  "author": "Victor Aguilar",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp-aws-s3": "^0.1.0",
+    "gulp-bower": "0.0.13",
+    "gulp-cache": "^0.4.5",
+    "gulp-concat": "^2.6.0",
+    "gulp-confirm": "^1.0.4",
+    "gulp-csvtojson": "^0.2.0",
+    "gulp-download-stream": "0.0.13",
+    "gulp-ext-replace": "^0.3.0",
+    "gulp-if": "^2.0.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-uglify": "^1.5.3",
+    "gulp-wrapper": "^1.0.0",
+    "jscs": "2.6.x",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0",
+    "knox": "git+https://github.com/Automattic/knox.git",
+    "lodash": "^4.13.1",
+    "yargs": "^4.7.1"
+  }
+}
