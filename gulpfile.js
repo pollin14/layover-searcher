@@ -24,6 +24,7 @@ const wrapper   = require('gulp-wrapper');
 const csvToJson = require('gulp-csvtojson');
 const insert    = require('gulp-insert');
 const extReplace = require('gulp-ext-replace');
+const htmlReplace = require('gulp-html-replace');
 const inquirer  = require('inquirer');
 const s3        = require('knox');
 const argv      = require('yargs').argv;
@@ -66,6 +67,27 @@ gulp.task('build', ['clean', 'csv-to-js', 'compile'], function () {
         .pipe(concat('layoverSearcher.js'))
         .pipe(gulp.dest('build'))
         ;
+});
+
+gulp.task('html-replace', function () {
+    return gulp.src('src/views/index.html')
+        .pipe(htmlReplace({
+            vendor_js: [
+                'https://code.jquery.com/jquery-3.1.0.min.js',
+                'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
+            ],
+            vendor_css: [
+                'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+            ],
+            main_js: [
+                'https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.js'
+            ],
+            main_cc: [
+                'https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.css'
+            ]
+        }))
+        .pipe(gulp.dest('build'))
+    ;
 });
 
 gulp.task('compile', ['jshint'], function () {
