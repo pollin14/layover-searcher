@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git@github.com:pollin14/layover-searcher.git"
   },
-  "main": "index.js",
+  "main": "build/layoverSearcher.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,12 @@
     "place",
     "route"
   ],
+  "gulpConfig": {
+    "awsS3JsLibrariesDir": "js-libraries",
+    "buildDir": "build",
+    "tmpDir": "tmp",
+    "resourcePath": "resources/layover.csv"
+  },
   "author": "Victor Aguilar",
   "license": "ISC",
   "devDependencies": {

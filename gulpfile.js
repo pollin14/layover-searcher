@@ -21,12 +21,24 @@ const s3        = require('knox');
 const argv      = require('yargs').argv;
 const pack      = require('./package.json');
 
-/****************************
+/**************************************
  * Parameters
- ***************************/
-const csvPathname = './resources/layover.csv';
+ **************************************/
 const gulpParameters = require('./parameters/gulp-parameters.json');
 const parameters = require( argv.prod? './parameters/parameters.prod.json': './parameters/parameters.dev.json');
+
+
+/**************************************
+ * Main Task
+ *************************************/
+
+gulp.task('build', ['clean', 'html-replace', 'compile', 'copy-css']);
+gulp.task('default', ['build']);
+gulp.task('publish', ['upload']);
+
+/**************************************
+ * Secondary and Auxiliary Task
+ *************************************/
 
 /**
  * Watch
@@ -48,38 +60,34 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('clean', function () {
-    del(['tmp', 'build']);
+    return del([pack.gulpConfig.tmpDir, pack.gulpConfig.buildDir]);
 });
 
 /**
  * Converts the layover information from csv to javascript.
  */
-gulp.task('csv-to-js', function () {
-    return gulp.src(csvPathname)
+gulp.task('csv-to-js', ['clean'], function () {
+    return gulp.src(pack.gulpConfig.resourcePath  + '/layover.csv')
         .pipe(csvToJson({ toArrayString: true }))
         .pipe(insert.prepend('var layoverSearcherDatabase = '))
         .pipe(insert.append(';'))
         .pipe(extReplace('.js'))
-        .pipe(gulp.dest('tmp'));
-});
-
-gulp.task('build', ['clean', 'html-replace', 'compile'], function () {
-
+        .pipe(gulp.dest(pack.gulpConfig.tmpDir));
 });
 
 /**
  * Replaces the script and stylesheets path with the prod or dev paths.
  */
-gulp.task('html-replace', function () {
+gulp.task('html-replace', ['clean'], function () {
     return gulp.src('src/views/index.html')
         .pipe(htmlReplace(parameters.assets.paths))
-        .pipe(gulp.dest('build'))
+        .pipe(gulp.dest(pack.gulpConfig.buildDir))
     ;
 });
 
-gulp.task('compile', ['jshint', 'csv-to-js'], function () {
+gulp.task('compile', ['clean', 'jshint', 'csv-to-js'], function () {
     return gulp.src([
-        'tmp/layover.js',
+        pack.gulpConfig.tmpDir + '/layover.js',
         'src/scripts/**/*.js'
     ])
         .pipe(concat('layoverSearcher.js'))
@@ -88,27 +96,32 @@ gulp.task('compile', ['jshint', 'csv-to-js'], function () {
             footer: '})();'
         }))
         .pipe(gulpIf(argv.prod, uglify()))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest(pack.gulpConfig.buildDir));
+});
+
+gulp.task('copy-css', ['clean'], function () {
+    return gulp.src('src/styles/*')
+        .pipe(gulp.dest(pack.gulpConfig.buildDir));
 });
 
 gulp.task('upload', ['build'], function () {
-    // const aws = {
-    //     key: gulpParameters.awsS3Key,
-    //     secret: gulpParameters.awsS3secret,
-    //     bucket: gulpParameters.awsS3Bucket
-    // };
-    // var name = getMainFilePathname(argv.prod);
-    // var origin = './' + pack.buildDir + '/' + name;
-    // var destination = pack.awsS3JsLibrariesDir +'/' + pack.name + '/' + name;
-    //
-    // s3.createClient(aws)
-    //     .putFile(origin, destination, function (e, a) {
-    //         if (e !== null) {
-    //             console.log(e);
-    //         }
-    //         gutils.log('Url \'' + a.req.url + '\'');
-    //         a.resume();
-    //     });
-});
+    const filesNames = ['layoverSearcher.js', 'index.html', 'layoverSearcher.css'];
+    const aws = {
+        key: gulpParameters.awsS3Key,
+        secret: gulpParameters.awsS3secret,
+        bucket: gulpParameters.awsS3Bucket
+    };
+    var originDir = './' + pack.gulpConfig.buildDir;
+    var destinationDir = pack.gulpConfig.awsS3JsLibrariesDir +'/' + pack.name;
 
-gulp.task('default', ['build']);
+    filesNames.forEach(function (fileName) {
+        s3.createClient(aws)
+            .putFile(originDir + '/' + fileName, destinationDir + '/' + fileName, function (e, a) {
+                if (e !== null) {
+                    console.log(e);
+                }
+                gutils.log('Url \'' + a.req.url + '\'');
+                a.resume();
+            });
+    });
+});
