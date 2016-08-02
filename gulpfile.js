@@ -43,7 +43,7 @@ gulp.task('default', ['build']);
 /**
  * Watch
  */
-gulp.task('watch', ['publish'], function () {
+gulp.task('watch', ['build'], function () {
     gulp.watch(['src/**/*.js']);
 });
 
@@ -51,7 +51,7 @@ gulp.task('bower', function () {
     return bower();
 });
 
-gulp.task('jshint', function () {
+gulp.task('jshint',  function () {
     gulp.src('src/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
@@ -67,7 +67,7 @@ gulp.task('clean', function () {
  * Converts the layover information from csv to javascript.
  */
 gulp.task('csv-to-js', ['clean'], function () {
-    return gulp.src(pack.gulpConfig.resourcePath  + '/layover.csv')
+    return gulp.src(pack.gulpConfig.resourceDir + '/layover.csv')
         .pipe(csvToJson({ toArrayString: true }))
         .pipe(insert.prepend('var layoverSearcherDatabase = '))
         .pipe(insert.append(';'))
