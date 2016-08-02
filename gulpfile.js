@@ -33,8 +33,8 @@ const parameters = require( argv.prod? './parameters/parameters.prod.json': './p
  *************************************/
 
 gulp.task('build', ['clean', 'html-replace', 'compile', 'copy-css']);
-gulp.task('default', ['build']);
 gulp.task('publish', ['upload']);
+gulp.task('default', ['build']);
 
 /**************************************
  * Secondary and Auxiliary Task
