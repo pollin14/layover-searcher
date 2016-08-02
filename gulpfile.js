@@ -1,14 +1,5 @@
 'use strict';
 
-const params = require('./parameters/gulp-parameters.json');
-const csvPathname = './resources/layover.csv';
-
-const aws = {
-    key: params.awsS3Key,
-    secret: params.awsS3secret,
-    bucket: params.awsS3Bucket
-};
-
 const gulp      = require('gulp');
 const _         = require('lodash');
 const gutils    = require('gulp-util');
@@ -30,6 +21,16 @@ const s3        = require('knox');
 const argv      = require('yargs').argv;
 const pack      = require('./package.json');
 
+/****************************
+ * Parameters
+ ***************************/
+const csvPathname = './resources/layover.csv';
+const gulpParameters = require('./parameters/gulp-parameters.json');
+const parameters = require( argv.prod? './parameters/parameters.prod.json': './parameters/parameters.dev.json');
+
+/**
+ * Watch
+ */
 gulp.task('watch', ['publish'], function () {
     gulp.watch(['src/**/*.js']);
 });
@@ -47,7 +48,7 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('clean', function () {
-    return del(['tmp', 'build']);
+    del(['tmp', 'build']);
 });
 
 gulp.task('csv-to-js', function () {
@@ -71,21 +72,7 @@ gulp.task('build', ['clean', 'csv-to-js', 'compile'], function () {
 
 gulp.task('html-replace', function () {
     return gulp.src('src/views/index.html')
-        .pipe(htmlReplace({
-            vendor_js: [
-                'https://code.jquery.com/jquery-3.1.0.min.js',
-                'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
-            ],
-            vendor_css: [
-                'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
-            ],
-            main_js: [
-                'https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.js'
-            ],
-            main_cc: [
-                'https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.css'
-            ]
-        }))
+        .pipe(htmlReplace(parameters.assets.paths))
         .pipe(gulp.dest('build'))
     ;
 });
@@ -107,6 +94,11 @@ gulp.task('compile', ['jshint'], function () {
 });
 
 gulp.task('upload', ['build'], function () {
+    // const aws = {
+    //     key: gulpParameters.awsS3Key,
+    //     secret: gulpParameters.awsS3secret,
+    //     bucket: gulpParameters.awsS3Bucket
+    // };
     // var name = getMainFilePathname(argv.prod);
     // var origin = './' + pack.buildDir + '/' + name;
     // var destination = pack.awsS3JsLibrariesDir +'/' + pack.name + '/' + name;

@@ -1,0 +1,19 @@
+{
+  "assets": {
+    "paths": {
+      "vendor_js": [
+        "../../bower_components/jquery/dist/jquery.min.js",
+        "../../bower_components/bootstrap/dist/js/bootstrap.min.js"
+      ],
+      "vendor_css": [
+        "../../bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
+      ],
+      "main_js": [
+        "layoverSearcher.js"
+      ],
+      "main_css": [
+        "layoverSearcher.css"
+      ]
+    }
+  }
+}

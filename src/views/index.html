@@ -1,3 +1,9 @@
+<!--
+This document is processed by gulp. It replaces the comments with build:some_name with the the right
+markup to load stylesheets and scripts. This is required because the paths to these assets are different
+between local (developer machine) and production.
+
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,23 +11,18 @@
     <title>Layover searcher widget</title>
 
     <!-- build:vendor_css -->
-    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <!-- endbuild -->
 
     <!-- build:main_css -->
-    <link href="../styles/layoverSearcher.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
 <body>
 
 
 <!-- build:vendor_js -->
-<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- endbuild -->
 
 <!-- build:main_js -->
-<script src="../scripts/layoverSearcher.js"></script>
 <!-- endbuild -->
 </body>
 </html>

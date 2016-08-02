@@ -1,0 +1,19 @@
+{
+  "assets": {
+    "paths": {
+      "vendor_js": [
+        "https://code.jquery.com/jquery-3.1.0.min.js",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      ],
+      "vendor_css": [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      ],
+      "main_js": [
+        "https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.js"
+      ],
+      "main_css": [
+        "https://s3.amazonaws.com/static-s3.clickbus.com.mx/js-libraries/layover-searcher/layoverSearcher.css"
+      ]
+    }
+  }
+}
