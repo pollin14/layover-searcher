@@ -51,6 +51,9 @@ gulp.task('clean', function () {
     del(['tmp', 'build']);
 });
 
+/**
+ * Converts the layover information from csv to javascript.
+ */
 gulp.task('csv-to-js', function () {
     return gulp.src(csvPathname)
         .pipe(csvToJson({ toArrayString: true }))
@@ -60,16 +63,13 @@ gulp.task('csv-to-js', function () {
         .pipe(gulp.dest('tmp'));
 });
 
-gulp.task('build', ['clean', 'csv-to-js', 'compile'], function () {
-    return gulp.src([
-        'tmp/layover.js',
-        'tmp/layoverSearcher.js'
-    ])
-        .pipe(concat('layoverSearcher.js'))
-        .pipe(gulp.dest('build'))
-        ;
+gulp.task('build', ['clean', 'html-replace', 'compile'], function () {
+
 });
 
+/**
+ * Replaces the script and stylesheets path with the prod or dev paths.
+ */
 gulp.task('html-replace', function () {
     return gulp.src('src/views/index.html')
         .pipe(htmlReplace(parameters.assets.paths))
@@ -77,20 +77,18 @@ gulp.task('html-replace', function () {
     ;
 });
 
-gulp.task('compile', ['jshint'], function () {
-
+gulp.task('compile', ['jshint', 'csv-to-js'], function () {
     return gulp.src([
-        'src/widget/**/*.js'
+        'tmp/layover.js',
+        'src/scripts/**/*.js'
     ])
-        .pipe(
-            concat('layoverSearcher.js')
-        )
+        .pipe(concat('layoverSearcher.js'))
         .pipe(wrapper({
             header: '// Version: ' + pack.version + '\n(function () {\n\'use strict\';\n',
             footer: '})();'
         }))
         .pipe(gulpIf(argv.prod, uglify()))
-        .pipe(gulp.dest('tmp'));
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('upload', ['build'], function () {
