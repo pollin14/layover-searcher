@@ -44,7 +44,7 @@ gulp.task('default', ['build']);
  * Watch
  */
 gulp.task('watch', ['build'], function () {
-    gulp.watch(['src/**/*.js']);
+    gulp.watch(['src/**/*.js', 'parameters/*.dev.json']);
 });
 
 gulp.task('bower', function () {

@@ -21,7 +21,7 @@
     "awsS3JsLibrariesDir": "js-libraries",
     "buildDir": "build",
     "tmpDir": "tmp",
-    "resourcePath": "resources"
+    "resourceDir": "resources"
   },
   "author": "Victor Aguilar",
   "license": "ISC",
